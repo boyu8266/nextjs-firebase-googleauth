@@ -25,7 +25,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ account, profile }) {
       if (account?.provider === "google" && profile) {
         await findOrCreateUser(profile as GoogleProfile);
         await recordLogin(profile.sub as string, account.provider);

@@ -27,6 +27,12 @@ export default function TopToolbar() {
                 className="rounded-full"
               />
             )}
+            <Link
+              href="/login-history"
+              className="text-blue-500 hover:underline"
+            >
+              Login History
+            </Link>
             <LogoutButton />
           </>
         ) : (

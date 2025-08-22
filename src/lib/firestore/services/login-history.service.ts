@@ -14,3 +14,51 @@ export async function recordLogin(
   };
   await loginHistoryCollection.add(newLogin);
 }
+
+export async function getLoginHistory(
+  userId: string,
+  limit: number,
+  lastDocId?: string,
+): Promise<{
+  history: (LoginHistory & { id: string })[];
+  lastDocId: string | null;
+}> {
+  let query: FirebaseFirestore.Query = firestore
+    .collection("login_history")
+    .where("userId", "==", userId)
+    .orderBy("timestamp", "desc")
+    .limit(limit);
+
+  if (lastDocId) {
+    const lastDocSnapshot = await firestore
+      .collection("login_history")
+      .doc(lastDocId)
+      .get();
+    if (lastDocSnapshot.exists) {
+      query = query.startAfter(lastDocSnapshot);
+    }
+  }
+
+  const snapshot = await query.get();
+  const history: (LoginHistory & { id: string })[] = [];
+  let newLastDocId: string | null = null;
+
+  snapshot.docs.forEach((doc) => {
+    history.push({ id: doc.id, ...(doc.data() as LoginHistory) });
+  });
+
+  if (snapshot.docs.length > 0) {
+    newLastDocId = snapshot.docs[snapshot.docs.length - 1].id;
+  }
+
+  return { history, lastDocId: newLastDocId };
+}
+
+export async function getLoginHistoryCount(userId: string): Promise<number> {
+  const snapshot = await firestore
+    .collection("login_history")
+    .where("userId", "==", userId)
+    .count()
+    .get();
+  return snapshot.data().count;
+}
