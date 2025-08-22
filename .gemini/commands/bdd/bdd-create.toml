@@ -1,0 +1,161 @@
+description = "Create BDD Feature File"
+prompt = """
+# Create BDD Feature File
+
+## 1. Introduction
+
+Behavior-Driven Development (BDD) is an agile software development methodology that encourages collaboration between developers, QA, and non-technical business participants. At its core, BDD uses a common language called Gherkin to describe an application's expected behavior in natural language.
+
+This guide provides best practices for writing effective and maintainable BDD `feature` files.
+
+## 2. Core Principles
+
+  * **Focus on "Behavior," Not "Implementation"**: Describe what the system *should do* from a user's perspective, not *how it does it*.
+  * **Use a Ubiquitous Language**: Ensure all team members (business, development, testing) have a shared understanding of the features.
+  * **One Scenario, One Behavior**: Each `Scenario` should test a single, specific behavior or rule.
+  * **Be Declarative, Not Imperative**: Describe states and outcomes, not the granular steps to get there. For example, use "Given the user is logged in" instead of "Given I fill in username, And I fill in password, And I click the login button."
+
+## 3. Gherkin Syntax and Structure
+
+Gherkin is the language used to write BDD specifications. A `feature` file typically includes the following keywords:
+
+### 3.1. `Feature`
+
+A `Feature` is the highest-level description of the functionality being tested. It should answer three questions:
+
+  * **As a**: Describes a role or user type.
+  * **I want**: Describes the goal this role wants to achieve.
+  * **So that**: Describes the value or benefit of achieving this goal.
+
+**Example**:
+
+```gherkin
+Feature: User Login
+  As a registered user
+  I want to log in to the system
+  So that I can access my personal dashboard
+```
+
+### 3.2. `Scenario`
+
+A `Scenario` describes a concrete example of how the system should behave in a specific situation. The scenario title should clearly state its purpose.
+
+**Example**:
+
+```gherkin
+Scenario: Successful login with correct credentials
+```
+
+### 3.3. `Given`, `When`, `Then`
+
+This is the core structure of BDD, describing the three phases of a behavior:
+
+  * **`Given`**: Sets up the initial state or preconditions of the scenario. This is the **context** before the behavior occurs.
+  * **`When`**: Describes the specific action performed by the user or an event that is triggered. This is the core **action** being tested.
+  * **`Then`**: Describes the expected system **outcome** or verification point after the `When` step.
+
+**Example**:
+
+```gherkin
+Given I am a registered user on the login page
+When I enter a valid username and password
+And I click the "Login" button
+Then I should be redirected to my personal dashboard
+And I should see a welcome message "Hello, [Username]!"
+```
+
+### 3.4. `And`, `But`
+
+When you have multiple steps in the same block (`Given`, `When`, or `Then`), you can use `And` or `But` to improve readability.
+
+### 3.5. `Background`
+
+If all `Scenarios` in a `feature` file share the same `Given` steps, you can extract them into a `Background` to avoid repetition.
+
+**Example**:
+
+```gherkin
+Feature: Shopping Cart Management
+
+  Background:
+    Given I am a logged-in user
+    And I have two items in my shopping cart
+
+  Scenario: Remove an item from the cart
+    When I remove one item from the cart
+    Then I should see the cart item count updated to one
+
+  Scenario: Proceed to checkout
+    When I click the "Proceed to Checkout" button
+    Then I should be taken to the checkout page
+```
+
+### 3.6. `Scenario Outline`
+
+Used to test the same behavior with multiple sets of data, avoiding repetitive `Scenarios`. It is used in conjunction with an `Examples` table.
+
+**Example**:
+
+```gherkin
+Scenario Outline: Validate login results for different user types
+  Given I am on the login page
+  When I enter username "<username>" and password "<password>"
+  And I click the "Login" button
+  Then I should see the message "<message>"
+
+  Examples:
+    | username          | password       | message                         |
+    | "standard_user"   | "secret_sauce" | "Login Successful"              |
+    | "locked_out_user" | "secret_sauce" | "Sorry, this account is locked" |
+    | "problem_user"    | "wrong_password" | "Username or password is incorrect" |
+```
+
+## 4. Best Practices
+
+### 4.1. Write Clear Feature and Scenario Titles
+
+  * **Feature Title**: Should clearly describe business value. E.g., "Manage User Profile" is better than "User Database Tests."
+  * **Scenario Title**: Should summarize the behavior and expected outcome. E.g., "User should be able to successfully save an updated address."
+
+### 4.2. Keep Steps Concise and High-Level
+
+  * Avoid describing UI details in Gherkin steps, like "click the blue button" or "fill in the input with id 'user_name'."
+  * Use language that describes user intent, such as "I log in to the system" or "I add an item to the cart." This makes tests more resilient to UI changes.
+
+### 4.3. Use the First-Person Perspective
+
+Use "I..." to describe user actions. This helps frame the behavior from the user's point of view.
+
+### 4.4. One `When` for One Core Action
+
+Try to have only one `When` step per `Scenario`. This helps focus the test on a single behavior. If you have multiple actions, consider if they should be split into multiple `Scenarios`.
+
+### 4.5. `Then` Should Only Contain Verifications
+
+`Then` steps should not perform any actions. They are exclusively for verifying system state, displayed information, or outcomes.
+
+### 4.6. Organize Your Feature Files
+
+  * **Organize by feature or user story**: Each `feature` file should correspond to a user story or a distinct feature module.
+  * **Directory Structure**: Use a meaningful directory structure to store `feature` files, for example:
+    '''
+    features/
+    ├── authentication/
+    │   └── login.feature
+    ├── shopping_cart/
+    │   └── manage_cart.feature
+    └── checkout/
+        └── place_order.feature
+    '''
+
+## 5. Common Mistakes and How to Avoid Them
+
+| Common Mistake | Bad Example | How to Fix | Good Example |
+| :--- | :--- | :--- | :--- |
+| **Too Imperative** | `When I click the button with id 'login-btn'` | Describe user intent | `When I submit the login form` |
+| **Mixing Multiple Behaviors** | `When I add an item to the cart And I proceed to checkout` | Split into two separate scenarios | `Scenario 1: Add item`, `Scenario 2: Proceed to checkout` |
+| **Actions in a `Then` Step** | `Then I should see a success message And I click to go home` | Move the action to a new `When` step in a new scenario | `Then I should see a success message` (New scenario) `When I navigate to the homepage` |
+| **Implicit Dependencies** | Scenario A must run before Scenario B | Each scenario should be independent. Use `Background` or `Given` to set state. | Every `Scenario` can run on its own |
+
+Here is the request: {{args}}, and the **only** task you need to do is to 'Create BDD Feature File'.
+"""
