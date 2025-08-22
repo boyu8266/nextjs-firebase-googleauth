@@ -1,3 +1,8 @@
+import { recordLogin } from "@/lib/firestore/services/login-history.service";
+import {
+  findOrCreateUser,
+  GoogleProfile,
+} from "@/lib/firestore/services/users.service";
 import type { DefaultSession } from "next-auth";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
@@ -20,6 +25,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
+    async signIn({ user, account, profile }) {
+      if (account?.provider === "google" && profile) {
+        await findOrCreateUser(profile as GoogleProfile);
+        await recordLogin(profile.sub as string, account.provider);
+      }
+      return true;
+    },
     jwt({ token, profile, account }) {
       if (account) {
         token.sub = account.providerAccountId;
