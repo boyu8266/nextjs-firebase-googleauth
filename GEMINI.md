@@ -31,11 +31,17 @@ You must create a `.env.local` file in the root of the project with the followin
 AUTH_SECRET="your-secure-secret"
 AUTH_GOOGLE_ID="your-google-client-id"
 AUTH_GOOGLE_SECRET="your-google-client-secret"
+FIREBASE_PROJECT_ID="your-firebase-project-id"
+FIREBASE_CLIENT_EMAIL="your-firebase-client-email"
+FIREBASE_PRIVATE_KEY="your-firebase-private-key"
 ```
 
 - `AUTH_SECRET`: A secret key used to sign and encrypt tokens. You can generate one using `openssl rand -base64 32`.
 - `AUTH_GOOGLE_ID`: Your Google OAuth Client ID.
 - `AUTH_GOOGLE_SECRET`: Your Google OAuth Client Secret.
+- `FIREBASE_PROJECT_ID`: Your Firebase Project ID.
+- `FIREBASE_CLIENT_EMAIL`: Your Firebase Client Email.
+- `FIREBASE_PRIVATE_KEY`: Your Firebase Private Key (ensure this is properly escaped if it contains newlines).
 
 ### Commands
 

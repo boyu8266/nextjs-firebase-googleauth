@@ -1,5 +1,3 @@
-https://github.com/user-attachments/assets/b95d69e6-aa12-4099-b2ec-0d9df15f7e11
-
 ## Project Overview
 
 This is a [Next.js](https://nextjs.org/) project that uses the [`next-auth`](https://next-auth.js.org/) library for authentication. The project is configured to use the [Google](https://developers.google.com/identity) provider for OAuth.
@@ -32,9 +30,12 @@ To get started with this project, you'll need to have [Node.js](https://nodejs.o
     AUTH_SECRET=
     AUTH_GOOGLE_ID=
     AUTH_GOOGLE_SECRET=
+    FIREBASE_PROJECT_ID=
+    FIREBASE_CLIENT_EMAIL=
+    FIREBASE_PRIVATE_KEY=
     ```
 
-    You can get the `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET` from the [Google Cloud Console](https://console.cloud.google.com/apis/credentials).
+    You can get the `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET` from the [Google Cloud Console](https://console.cloud.google.com/apis/credentials). You can get the Firebase related variables from your Firebase project settings.
 
 3.  **Run the development server:**
 
