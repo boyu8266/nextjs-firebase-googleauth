@@ -1,6 +1,9 @@
-import { FieldValue } from "firebase-admin/firestore";
+import { FieldValue, Timestamp } from "firebase-admin/firestore";
 import { firestore } from "../index";
-import { LoginHistory } from "../models/login-history.model";
+import {
+  LoginHistory,
+  ClientLoginHistory,
+} from "../models/login-history.model";
 
 export async function recordLogin(
   userId: string,
@@ -61,4 +64,26 @@ export async function getLoginHistoryCount(userId: string): Promise<number> {
     .count()
     .get();
   return snapshot.data().count;
+}
+
+export async function getAllLoginHistory(
+  limit: number,
+): Promise<ClientLoginHistory[]> {
+  const snapshot = await firestore
+    .collection("login_history")
+    .orderBy("timestamp", "desc")
+    .limit(limit)
+    .get();
+
+  const history: ClientLoginHistory[] = [];
+  snapshot.docs.forEach((doc) => {
+    const data = doc.data() as LoginHistory;
+    history.push({
+      id: doc.id,
+      provider: data.provider,
+      timestamp: (data.timestamp as Timestamp).toDate(),
+    });
+  });
+
+  return history;
 }

@@ -9,7 +9,9 @@ interface LoginHistoryTableProps {
 export function LoginHistoryTable({ history }: LoginHistoryTableProps) {
   const rows = history.map((record) => (
     <Table.Tr key={record.id}>
-      <Table.Td>{record.timestamp.toLocaleString()}</Table.Td>
+      <Table.Td suppressHydrationWarning>
+        {record.timestamp.toLocaleString()}
+      </Table.Td>
       <Table.Td>{record.provider}</Table.Td>
     </Table.Tr>
   ));
