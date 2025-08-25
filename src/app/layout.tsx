@@ -21,9 +21,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js Google Auth Example",
+  title: "Next.js Google Auth and Firebase(NoSQL DB) Example",
   description:
-    "An example Next.js application with Google OAuth authentication.",
+    "An example Next.js application with Google OAuth authentication and Firebase (NoSQL DB) integration.",
 };
 
 export default function RootLayout({
