@@ -1,7 +1,7 @@
 import { LoginHistoryHomeView } from "@/app/components/LoginHistoryHomeView";
 import TopToolbar from "@/app/components/top-toolbar";
 
-export default async function Home() {
+export default function Home() {
   return (
     <main>
       <TopToolbar />
