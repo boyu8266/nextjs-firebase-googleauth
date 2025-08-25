@@ -1,3 +1,5 @@
+https://github.com/user-attachments/assets/10fc14c4-2f71-4b2f-9aeb-5efaf36570e1
+
 ## Project Overview
 
 This is a [Next.js](https://nextjs.org/) project that uses the [`next-auth`](https://next-auth.js.org/) library for authentication. The project is configured to use the [Google](https://developers.google.com/identity) provider for OAuth.
